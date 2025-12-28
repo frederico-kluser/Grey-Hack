@@ -1,0 +1,46 @@
+clear_screen
+print("<b>====== Decipher Tool ======</b>")
+print("")
+
+logIcons = {"INFO": "ℹ️", "WARN": "⚠️", "ERROR": "❌", "OK": "✅"}
+
+log = function(level, message)
+    emoji = logIcons[level]
+    if not emoji then
+        emoji = "🔹"
+    end if
+    print(emoji + " [" + level + "] " + message)
+end function
+
+crypto = include_lib("/lib/crypto.so")
+if not crypto then
+    log("ERROR", "Biblioteca /lib/crypto.so nao encontrada.")
+    exit("")
+end if
+
+hashEntrada = null
+if params.len > 0 then
+    hashEntrada = params[0]
+end if
+
+if not hashEntrada or hashEntrada.len == 0 then
+    hashEntrada = user_input("Digite o hash a descriptografar: ")
+end if
+
+if not hashEntrada or hashEntrada.len == 0 then
+    log("WARN", "Nenhum hash informado. Encerrando.")
+    exit("")
+end if
+
+log("INFO", "Processando hash informado")
+resultado = crypto.decipher(hashEntrada)
+
+if resultado then
+    print("")
+    log("OK", "Descriptografia concluida")
+    print("[RESULTADO] " + resultado)
+else
+    print("")
+    log("ERROR", "Nao foi possivel descriptografar o valor fornecido")
+end if
+

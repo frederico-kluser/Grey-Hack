@@ -1,0 +1,132 @@
+clear_screen
+print("<b>====== WiFi Target Cracker ======</b>")
+print("")
+
+logIcons = {"INFO": "ℹ️", "WARN": "⚠️", "ERROR": "❌", "OK": "✅"}
+
+log = function(level, message)
+    emoji = logIcons[level]
+    if not emoji then
+        emoji = "🔹"
+    end if
+    print(emoji + " [" + level + "] " + message)
+end function
+
+crypto = include_lib("/lib/crypto.so")
+if not crypto then
+    log("ERROR", "Biblioteca /lib/crypto.so nao encontrada.")
+    exit("")
+end if
+
+shell = get_shell
+pc = shell.host_computer
+if not pc then
+    log("ERROR", "Computador hospedeiro nao encontrado.")
+    exit("")
+end if
+
+monitorDevice = "wlan0"
+capPath = current_path + "/wifi_target.cap"
+monitorAtivo = 0
+
+stop_monitor = function()
+    if monitorAtivo == 1 then
+        log("INFO", "Desativando modo monitor...")
+        crypto.airmon("stop", monitorDevice)
+        wait(0.5)
+        monitorAtivo = 0
+    end if
+end function
+
+cleanup_capture = function()
+    capFile = pc.File(capPath)
+    if capFile then
+        capFile.delete
+    end if
+end function
+
+cleanup_and_exit = function(level, message)
+    if message.len > 0 then
+        log(level, message)
+    end if
+    stop_monitor()
+    cleanup_capture()
+    exit("")
+end function
+
+log("INFO", "Ativando modo monitor...")
+startRes = crypto.airmon("start", monitorDevice)
+if typeof(startRes) == "string" and startRes.len > 0 then
+    cleanup_and_exit("ERROR", "Falha ao ativar monitor: " + startRes)
+end if
+monitorAtivo = 1
+
+log("INFO", "Escaneando redes WiFi...")
+networks = pc.wifi_networks(monitorDevice)
+if networks.len == 0 then
+    cleanup_and_exit("ERROR", "Nenhuma rede WiFi encontrada.")
+end if
+
+redesProcessadas = []
+for net in networks
+    partes = net.split(" ")
+    if partes.len >= 3 then
+        pwrValor = partes[1].replace("%", "").to_int
+        if pwrValor < 0 then
+            pwrValor = 0
+        end if
+        rede = {"bssid": partes[0], "pwr": pwrValor, "essid": partes[2]}
+        redesProcessadas.push(rede)
+    end if
+end for
+
+if redesProcessadas.len == 0 then
+    cleanup_and_exit("ERROR", "Nenhuma rede valida encontrada.")
+end if
+
+redesProcessadas.sort("pwr")
+redesProcessadas.reverse
+
+print(format_columns("NUM BSSID PWR ESSID"))
+print("--------------------------------------------------")
+indice = 0
+for rede in redesProcessadas
+    linha = "[" + indice + "] " + rede.bssid + " " + str(rede.pwr) + "% " + rede.essid
+    print(linha)
+    indice = indice + 1
+end for
+print("")
+
+selecionado = user_input("Digite o numero da rede desejada: ").to_int
+if selecionado < 0 or selecionado >= redesProcessadas.len then
+    cleanup_and_exit("ERROR", "Selecao invalida.")
+end if
+
+alvo = redesProcessadas[selecionado]
+log("INFO", "Alvo escolhido: " + alvo.essid + " (" + str(alvo.pwr) + "%)")
+
+cleanup_capture()
+ackGoal = 15000
+log("INFO", "Capturando pacotes (" + ackGoal + " ACKs)...")
+res = crypto.aireplay(alvo.bssid, alvo.essid, ackGoal)
+if typeof(res) == "string" and res.len > 0 then
+    log("WARN", res)
+end if
+
+log("INFO", "Aguardando geracao do arquivo de captura...")
+wait(3)
+
+log("INFO", "Iniciando aircrack...")
+senha = crypto.aircrack(capPath)
+if not senha then
+    cleanup_and_exit("ERROR", "Nao foi possivel crackear a senha. Tente novamente.")
+end if
+
+stop_monitor()
+cleanup_capture()
+
+print("")
+log("OK", "Senha obtida com sucesso!")
+print("[SENHA] " + senha)
+print("")
+exit("")
