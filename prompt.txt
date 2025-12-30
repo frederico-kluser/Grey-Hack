@@ -1,0 +1,155 @@
+# Template de Prompt - Grey Hack Documentation
+
+## Documentação Principal
+
+@README.md
+@greyscript.md
+@instructions.md
+
+## Guias de Sistema
+
+@exploits.md
+@hackshop.md
+@logstream.md
+@dangerousCommands.md
+@cloud-servers.md
+@verify-before-exploit.md
+@exploit-verify.md
+
+## Scripts e Tutoriais
+
+@getAllWifi.md
+@connectInternet.md
+
+---
+
+## Como usar este template
+
+### Opção 1: Carregar todos os documentos
+```
+@README.md @greyscript.md @instructions.md @exploits.md @hackshop.md @logstream.md @dangerousCommands.md @cloud-servers.md @verify-before-exploit.md @getAllWifi.md @connectInternet.md @exploit-verify.md
+```
+
+### Opção 2: Por categoria
+
+**Documentação Básica:**
+```
+@README.md @greyscript.md @instructions.md
+```
+
+**Sistema de Exploits:**
+```
+@exploits.md @hackshop.md @verify-before-exploit.md @exploit-verify.md
+```
+
+**Segurança e OPSEC:**
+```
+@logstream.md @dangerousCommands.md @cloud-servers.md
+```
+
+**Automação WiFi:**
+```
+@getAllWifi.md @connectInternet.md
+```
+
+### Opção 3: Contexto completo em uma linha
+
+Para prompts que precisam de todo o contexto do projeto:
+```
+Contexto: @README.md @greyscript.md @instructions.md @exploits.md @hackshop.md @logstream.md @dangerousCommands.md @cloud-servers.md @verify-before-exploit.md @getAllWifi.md @connectInternet.md @exploit-verify.md
+```
+
+---
+
+## Descrição dos Arquivos
+
+### @README.md
+Tutorial definitivo do Grey Hack (1082 linhas). Cobre desde instalação até técnicas avançadas de hacking, programação GreyScript, exploits, missões, economia e progressão.
+
+### @greyscript.md
+Guia completo da linguagem GreyScript. Tipos de dados, operadores, estruturas de controle, funções, API do jogo, métodos nativos e padrões de código.
+
+### @instructions.md
+Instruções iniciais rápidas: conectar WiFi, criar email, criar conta bancária, ferramentas essenciais da shop e hackshop, scripts básicos.
+
+### @exploits.md
+Sistema de exploits técnico definitivo. Como funcionam internamente, requisitos, verificação de compatibilidade, tabelas de referência, diagnóstico e mecânicas avançadas.
+
+### @hackshop.md
+Guia definitivo da Hack Shop. Como acessar, catálogo completo de produtos, decodificação de descrições, estratégia de compra, erros comuns.
+
+### @logstream.md
+Guia completo de limpeza de logs e técnicas de ataque sem root. Métodos de limpeza, escalação de privilégios, OPSEC, ferramentas da comunidade.
+
+### @dangerousCommands.md
+Guia de sobrevivência e evasão de detecção. Tabela de risco por comando, mecânicas de rastreamento, checklist pré-hack, resposta de emergência, erros fatais.
+
+### @cloud-servers.md
+Servidores alugados completo. O que são, como adquirir, configuração técnica, port forwarding, uso como bounce point, rshell, análise econômica, OPSEC.
+
+### @verify-before-exploit.md
+Como saber se um exploit vai funcionar ANTES de executar. Os 4 requisitos possíveis, fluxo de verificação manual, script completo de verificação.
+
+### @getAllWifi.md
+Script WiFi Harvester - coleta automática de TODAS as senhas WiFi disponíveis em sequência, sem conectar. Tutorial completo de instalação e uso.
+
+### @connectInternet.md
+Script WiFi Auto Hacker - 100% automatizado ou manual, hackeia, conecta, salva credenciais e limpa rastros automaticamente.
+
+### @exploit-verify.md
+Documentação completa do script exploit-verify.src. O que faz, o que não faz, funcionamento técnico, interpretando resultados, possíveis melhorias, troubleshooting, exemplos.
+
+---
+
+## Exemplos de Prompts Efetivos
+
+### Exemplo 1: Ajuda com exploit que não funciona
+```
+@exploits.md @hackshop.md @verify-before-exploit.md
+
+Meu exploit para libssh.so v1.2.0 está retornando null. Como diagnosticar o problema?
+```
+
+### Exemplo 2: Criar novo script GreyScript
+```
+@greyscript.md @README.md
+
+Crie um script que automaticamente escaneia uma rede LAN e testa exploits em todos os IPs encontrados.
+```
+
+### Exemplo 3: Melhorar segurança operacional
+```
+@logstream.md @dangerousCommands.md @cloud-servers.md
+
+Fui detectado várias vezes. Revise meu OPSEC e sugira melhorias.
+```
+
+### Exemplo 4: Debugar script existente
+```
+@greyscript.md @exploit-verify.md
+
+[Cole o código do seu script]
+
+O script está gerando erro "Key Not Found" na linha 158. Como corrigir?
+```
+
+### Exemplo 5: Planejamento de missão
+```
+@README.md @exploits.md @hackshop.md @dangerousCommands.md
+
+Preciso hackear um banco para missão Rep 1. Crie um plano passo-a-passo completo incluindo OPSEC.
+```
+
+---
+
+## Notas
+
+- Todos os arquivos markdown estão no diretório `/Volumes/Extension/Projects/Grey Hack/`
+- Use `@` antes do nome do arquivo para referenciar
+- Combine múltiplos arquivos para contexto mais rico
+- Total: **12 arquivos markdown** cobrindo todo o ecossistema Grey Hack
+
+---
+
+**Última atualização:** 30/12/2024
+**Projeto:** Grey Hack - Documentação Completa e Scripts
